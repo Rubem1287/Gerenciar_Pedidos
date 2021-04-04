@@ -14,10 +14,11 @@ namespace Gerenciar_Pedidos.Entities.Enums
 
         }
 
-        public Product(string name, double price)
+        public Product(string nameproduct, double priceproduct)
         {
-            Name = name;
-            Price = price;
+            Name = nameproduct;
+            Price = priceproduct;
         }
+
     }
 }

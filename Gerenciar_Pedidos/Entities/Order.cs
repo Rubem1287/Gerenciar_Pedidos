@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Gerenciar_Pedidos.Entities.Enums;
+using System.Globalization;
 
 
 namespace Gerenciar_Pedidos.Entities
@@ -11,26 +12,20 @@ namespace Gerenciar_Pedidos.Entities
         public DateTime Moment { get; set; }
         public OrderStatus Status { get; set; }
         public Client Client { get; set; }
-        public Product Product { get; set; }
-        public OrderItem OrderItem { get; set; }
         public List<OrderItem> Item { get; set; } = new List<OrderItem>();
 
         public Order()
         {
 
         }
-
-        public Order(DateTime moment)
+        public Order(DateTime moment, OrderStatus status, Client client)
         {
             Moment = moment;
-        }
-
-        public Order(OrderStatus status, Client client, DateTime moment) : this (moment)
-        {
-            
             Status = status;
             Client = client;
         }
+
+     
 
         public void AddItem(OrderItem orderitem)
         {
@@ -42,13 +37,13 @@ namespace Gerenciar_Pedidos.Entities
             Item.Remove(orderItem);
         }
 
-        public double total(int quantify, double price)
+        public double total()
         {
             double sum = 0;
 
             foreach(OrderItem item in Item)
             {
-                sum += item.SubTotal(quantify, price);
+                sum += item.SubTotal();
             }
             return sum;
         }
@@ -58,38 +53,21 @@ namespace Gerenciar_Pedidos.Entities
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine("Dados do pedido : ");
-            sb.Append("Hora do pedido : ");
-            sb.AppendLine(Moment.ToString("dd/MM/yyyy HH:mm:ss"));
-            sb.Append("Status do Pedido : ");
-            sb.AppendLine(Status.ToString());
-            sb.Append("Cliente : ");
-            sb.Append(Client.Name);
-            sb.Append(" ");
-            sb.Append(Client.BirthDate.ToString("(dd/MM/yyyy)"));
-            sb.Append(" - ");
-            sb.AppendLine(Client.Email.ToString());
-            //sb.AppendLine("Itens do Pedido : ");
-            //sb.Append(Product.Name.ToString());
-            //sb.Append(", ");
-            //sb.Append(Product.Price.ToString());
-            //sb.Append(", ");
-            //sb.Append(OrderItem.Quantify.ToString());
-            //sb.Append(", ");
+            sb.AppendLine("Hora do pedido : "+ Moment.ToString("dd/MM/yyyy HH:mm:ss"));
+            sb.AppendLine("Status do Pedido : "+Status);
+            sb.AppendLine("Cliente : "+Client);
+            sb.AppendLine("Itens do Pedido : ");
+       
+            foreach(OrderItem item in Item)
+            {
+                sb.AppendLine(item.ToString());
+            }
+
+            sb.AppendLine("Preço Total : $" + total().ToString("F2", CultureInfo.InvariantCulture));
 
             return sb.ToString();
 
 
         }
-
-        //public double Total(int quantify, double price)
-        //{
-
-
-
-        //    return;
-        //}
-
-        
-
     }
 }

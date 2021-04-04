@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
+using Gerenciar_Pedidos.Entities;
 
 namespace Gerenciar_Pedidos.Entities.Enums
 {
     class OrderItem
     {
-        public int Quantify { get; set; }
+        public int Quantity { get; set; }
         public double Price { get; set; }
         public Product Product { get; set; }
 
@@ -15,16 +17,28 @@ namespace Gerenciar_Pedidos.Entities.Enums
 
         }
 
-        public OrderItem(int quantify, double price)
+        public OrderItem(int quantity, double price, Product product)
         {
-            Quantify = quantify;
+            Quantity = quantity;
             Price = price;
+            Product = product;
             
         }
 
-        public double SubTotal(int quantify, double price)
+        public double SubTotal()
         {
-            return quantify * price;
+            return Quantity * Price;
+        }
+
+        public override string ToString()
+        {
+            return Product.Name
+                + ", $"
+                + Price.ToString("F2", CultureInfo.InvariantCulture)
+                + ", Quantidade "
+                + Quantity
+                + ", Subtotal: "
+                + SubTotal().ToString("F2", CultureInfo.InvariantCulture);
         }
     }
 }

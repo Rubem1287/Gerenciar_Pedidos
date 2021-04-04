@@ -10,31 +10,37 @@ namespace Gerenciar_Pedidos
     {
         static void Main(string[] args)
         {
-            List<Product> product;
-            Product product1 = new Product();
-            List<OrderItem> orderItem;
-            OrderItem orderItem1 = new OrderItem();
+
+            
+            OrderItem orderItem = new OrderItem();
             Order order = new Order();
+
 
 
             Console.WriteLine("Entre com os dados do Cliente : ");
             Console.Write("Nome : ");
             string name = Console.ReadLine();
 
+
             Console.Write("Email : ");
             string email = Console.ReadLine();
 
+
             Console.Write("Data de Aniversário (DD/MM/YYYY) : ");
             DateTime birth = DateTime.Parse(Console.ReadLine());
+
             DateTime moment = DateTime.Now;
+            
 
-            Console.WriteLine("Data do Pedido : " + moment);
+            Console.WriteLine("Data do Pedido : " + order.Moment);
             Client client = new Client(name, email, birth);
-
-
-            OrderStatus status = OrderStatus.Processando;
+            
+            Console.Write("Digite o Status do produto de 1 a 4 : ");
+            OrderStatus status = Enum.Parse<OrderStatus>(Console.ReadLine());
             Console.Write("Status : " + status);
             Console.WriteLine();
+
+            order = new Order(moment, status, client);
 
             Console.Write("Quantos produtos tem o pedido? ");
             int n = int.Parse(Console.ReadLine());
@@ -47,31 +53,32 @@ namespace Gerenciar_Pedidos
                 string nameproduct = Console.ReadLine();
 
                 Console.Write("Produto Preço : ");
-                double priceprodutc = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+                double priceproduct = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
 
                 Console.Write("Quantidade : ");
-                int quantifyproduct = int.Parse(Console.ReadLine());
+                int quantityproduct = int.Parse(Console.ReadLine());
 
-                product1 = new Product(nameproduct, priceprodutc);
-                orderItem1 = new OrderItem(quantifyproduct, priceprodutc);
+                Product product = new Product()
+                {
+                    Name = nameproduct,
+                    Price = priceproduct
 
+                };
+
+              
+                orderItem = new OrderItem(quantityproduct, priceproduct, product);
+
+                
+                order.AddItem(orderItem);
+
+                
 
             }
 
-            
-            
+
+            Console.WriteLine();
             Console.WriteLine(order);
-            Console.WriteLine("Produtos do pedido : ");
-            for (int c = 0; c < n; c++)
-            {
-               
-                    Console.WriteLine(product1.Name
-                    + ", " + product1.Price.ToString("F2", CultureInfo.InvariantCulture)
-                    + ", Quantidade : " + orderItem1.Quantify
-                    + ", Subtotal : $" + orderItem1.SubTotal(orderItem1.Quantify, orderItem1.Price));
-                
-                
-            }
+           
 
 
         }
